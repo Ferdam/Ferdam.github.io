@@ -1,0 +1,296 @@
+<style>
+    :root {
+        --main-color: hsl(175, 100%, 26%);
+        --main-color-shadow: hsl(175, 100%, 20%);
+        --button-color: hsl(212, 100%, 26%);
+        --button-color-shadow: hsl(212, 100%, 20%);
+        --contextmenu-color: hsl(0, 0%, 17%);
+        --contextmenu-color-shadow: hsl(0, 0%, 10%);
+        --button-alt-color: hsl(10, 100%, 40%);
+        --button-alt-color-shadow: hsl(10, 100%, 30%);
+    }
+
+    * {
+        font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        padding: 32px;
+        background-color: var(--main-color);
+    }
+
+    .page-container {
+        display: grid;
+        gap: 16px;
+    }
+
+    .page-header {
+        color: #fff;
+        font-size: 20px;
+        display: grid;
+        justify-content: center;
+    }
+
+    .table-div {
+        background-color: #fff;
+        border: 1px dashed var(--main-color);
+    }
+
+    .row-menu {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .button {
+        height: 45px;
+        border: none;
+        border-radius: 3px;
+        background-color: var(--button-color);
+        box-shadow: 0px 4px 0px 0px var(--button-color-shadow);
+        padding: 8px 16px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        transition: all ease-in 200ms;
+    }
+
+    .button-get-html {
+        background-color: var(--button-alt-color);
+        box-shadow: 0px 4px 0px 0px var(--button-alt-color-shadow);
+        grid-column: span 2;
+    }
+
+    .button:hover {
+        cursor: pointer;
+        filter: contrast(80%) brightness(120%);
+        transition: all ease-in 200ms;
+    }
+    .button:active {
+        cursor: pointer;
+        margin-top: 3px;
+        box-shadow: 0px 1px 0px 0px var(--main-color-shadow);
+        filter: saturate(70%) brightness(100%);
+        transition: all ease-in 200ms;
+    }
+
+    .input {
+        background-color: #fff;
+        border: none;
+        border-radius: 3px;
+        height: 32px;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .contextmenu-options {
+        position: absolute;
+        display: grid;
+        gap: 8px;
+        background-color: var(--contextmenu-color);
+        box-shadow: 0px 6px 0px 0px var(--contextmenu-color-shadow);
+        padding: 16px 16px;
+        margin-top: 8px;
+        border: none;
+        border-radius: 4px;
+        z-index: 90;
+        max-width: 90%;
+        min-width: 370px;
+        resize: horizontal;
+        /*overflow: auto;*/
+    }
+
+    .contextmenu-options:after {
+        content: " ";
+        position: absolute;
+        top: -15px; /* At the bottom of the tooltip */
+        left: 8px;
+        margin-left: 0px;
+        border-width: 8px;
+        border-style: solid;
+        border-color: transparent transparent var(--contextmenu-color) transparent;
+    }
+
+    .contextmenu-item > label {
+        color: #fff;
+        font-size: 12px;
+    }
+    .contextmenu-item {
+        display: grid;
+        gap: 4px;
+    }
+
+    .code-container {
+        background-color: var(--contextmenu-color-shadow);
+        border-radius: 4px;
+        border: 1px dashed #fff;
+        font-size: 11px;
+        font-family: monospace;
+        color: #fff;
+    }
+
+    .code-container-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+    }
+</style>
+
+<div class="page-container">
+    <div class="page-header">
+        Criador de tabelas para cursos CIEDS
+    </div>
+    
+    <div class="table-div" onclick="selectBlock(event)">
+        <table class="table-cursos" style="background-color:#ffffff;max-width:614px;text-align:center;font-size:14px;border-spacing:8px;padding:20px;table-layout:fixed;vertical-align:middle;" align="center">
+            <tbody>
+                <tr>
+                    <td style="width:50%;font-family:Roboto;padding:10px;background-color:#f6f6f6;">
+                        <a style="text-decoration:none;color:inherit;">
+                            Nome do curso da esquerda
+                        </a>
+                    </td>
+                    <td style="width:50%;font-family:Roboto;padding:10px;background-color:#eaeaea;">
+                        <a style="text-decoration:none;color:inherit;">
+                            Nome do curso da direita
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="contextmenu-options" style="display: none;">
+        <div class="contextmenu-item change-text_container" >
+            <label class="change-text_label" for="Text">Alterar texto:</label>
+            <input class="change-text_input input" name="Text" type="text" onkeyup="handleChangeText(event)"/>
+        </div>
+        <div class="contextmenu-item change-link_container" >
+            <label class="change-link_label" for="Link">Alterar link:</label>
+            <input class="change-link_input input" name="Link" type="url" onkeyup="handleChangeLink(event)"/>
+        </div>
+    </div>
+    
+    <div class="row-menu">
+        <button class="button" onclick="addRow()">Add 01 row</button>
+        <button class="button" onclick="removeRow()">Remove 01 row</button>
+        <button class="button button-get-html" onclick="getHTMLCode()">Get HTML Code</button>
+    </div>
+
+    <div>
+        <p class="code-container-label">HTML Output:</p>
+        <div class="code-container">
+            <pre>
+                <code>
+    
+                </code>
+            </pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    let rowCounter = 0;
+    let switchColors = false;
+    let currentBlock = null;
+    let contextMenu = document.querySelector('.contextmenu-options');
+
+    //window.onbeforeunload = function() { return ""; }
+
+    document.onclick = (event) => {
+        if (contextMenu.contains(event.target)
+        || event.target.tagName == 'A' 
+        || event.target.tagName == 'TR') 
+        { 
+            return; 
+        }
+        contextMenu.style.display = 'none';
+    }
+
+    const setContextMenu = () => {
+        for (let item of document.querySelectorAll('td')) {
+            
+            item.oncontextmenu = (event) => {
+                event.preventDefault();
+                selectBlock(event);
+                let rect = event.currentTarget.getBoundingClientRect();
+                contextMenu.style.left = rect.x +'px';
+                contextMenu.style.top = rect.y + rect.height +'px';
+                contextMenu.style.display = "grid";
+                return;
+            };
+        }
+    }
+
+    setContextMenu();
+
+    const selectBlock = (event) => {
+        console.log(event.target);
+        if (event.target.tagName == 'A') {
+            currentBlock = event.target;
+        }
+        if (event.target.tagName == 'TR')
+        {
+            currentBlock = event.target.querySelector('a');
+        }
+        contextMenu.querySelector('input[name="Link"]').value = currentBlock.href;
+        contextMenu.querySelector('input[name="Text"]').value = currentBlock.innerText;
+    };
+
+    const handleChangeText = (event) => {
+        if (currentBlock) {
+            if (event.target.value) {
+                currentBlock.innerText = event.target.value;
+            }
+        }
+    };
+
+    const handleChangeLink = (event) => {
+        if (currentBlock) {
+            if (event.target.value) {
+                currentBlock.href = /^https?\:\/\//.test(event.target.value) ? event.target.value : 'http://'+event.target.value;
+            }
+            else {
+                currentBlock.removeAttribute('href');
+            }
+        }
+    };
+
+    const addRow = () => {
+        let tbody = document.querySelector('.table-cursos > tbody');
+        let newRow = document.createElement('tr');
+        let cellColor_1 = switchColors ? '#f6f6f6' : '#eaeaea';
+        let cellColor_2 = switchColors ? '#eaeaea' : '#f6f6f6';
+        newRow.innerHTML = `
+            <td style="width:50%;font-family:Roboto;padding:10px;background-color:${cellColor_1};">
+                <a style="text-decoration:none;color:inherit;">
+                    Nome do curso da esquerda
+                </a>
+            </td>
+            <td style="width:50%;font-family:Roboto;padding:10px;background-color:${cellColor_2};">
+                <a style="text-decoration:none;color:inherit;">
+                    Nome do curso da direita
+                </a>
+            </td>
+        `;
+        tbody.appendChild(newRow);
+        switchColors = !switchColors; // Invert colors
+        setContextMenu();
+        rowCounter++;
+    };
+
+    const removeRow = () => {
+        if (rowCounter == 0) { return; }
+        let tbody = document.querySelector('.table-cursos > tbody');
+        tbody.removeChild(tbody.lastChild);
+        rowCounter--;
+        switchColors = !switchColors;
+    };
+
+    const getHTMLCode = () => {
+        let tableHTML = document.querySelector('.table-div').innerHTML;
+        let codeContainer = document.querySelector('.code-container>pre>code');
+        codeContainer.innerText = tableHTML;
+    }
+</script>
