@@ -139,165 +139,39 @@
 
 <div class="page-container">
     <div class="page-header">
-        Criador de tabelas para cursos CIEDS
+        Index page
     </div>
     
-    <div class="table-div" onclick="selectBlock(event)">
-        <table class="table-cursos" style="background-color:#ffffff;max-width:614px;text-align:center;font-size:14px;border-spacing:8px;padding:20px;table-layout:fixed;vertical-align:middle;" align="center">
-            <tbody>
-                <tr>
-                    <td style="width:50%;font-family:Roboto;padding:10px;background-color:#f6f6f6;">
-                        <a style="text-decoration:none;color:inherit;">
-                            Nome do curso da esquerda
-                        </a>
-                    </td>
-                    <td style="width:50%;font-family:Roboto;padding:10px;background-color:#eaeaea;">
-                        <a style="text-decoration:none;color:inherit;">
-                            Nome do curso da direita
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    
-    <div class="contextmenu-options" style="display: none;">
-        <div class="contextmenu-item change-text_container" >
-            <label class="change-text_label" for="Text">Alterar texto:</label>
-            <input class="change-text_input input" name="Text" type="text" onkeyup="handleChangeText(event)"/>
-        </div>
-        <div class="contextmenu-item change-link_container" >
-            <label class="change-link_label" for="Link">Alterar link:</label>
-            <input class="change-link_input input" name="Link" type="url" onkeyup="handleChangeLink(event)"/>
-        </div>
-    </div>
-    
-    <div class="row-menu">
-        <button class="button" onclick="addRow()">Add 01 row</button>
-        <button class="button" onclick="removeRow()">Remove 01 row</button>
-        <button class="button button-get-html" onclick="getHTMLCode()">Get HTML Code</button>
-    </div>
-
     <div>
-        <p class="code-container-label">HTML Output:</p>
+        <p class="code-container-label">Description</p>
         <div class="code-container">
             <pre>
                 <code>
-    
+                    Nothing special here, sorreh :(
                 </code>
             </pre>
         </div>
     </div>
+    
+    <div class="row-menu">
+        <button class="button" onclick="goToProject('table_creator_cieds')">Go to Table Creator (CIEDS)</button>
+        <button class="button button-get-html" onclick="goToGithubUser()">Go to Github User</button>
+    </div>
+
+    
 </div>
 
 <script>
-    let rowCounter = 0;
-    let switchColors = false;
-    let currentBlock = null;
-    let contextMenu = document.querySelector('.contextmenu-options');
-
-    //window.onbeforeunload = function() { return ""; }
-
-    document.onclick = (event) => {
-        if (contextMenu.contains(event.target)
-        || event.target.tagName == 'A' 
-        || event.target.tagName == 'TR') 
-        { 
-            return; 
-        }
-        contextMenu.style.display = 'none';
+    
+    function goToGithubUser() {
+        window.open('https://github.com/Ferdam', '_blank');
+    }
+    
+    function goToProject(projectName) {
+        let path = 'index.html';
+        if (projectName === 'table_creator_cieds') { path = 'creator.html'; }
+        
+        window.location.pathname = path;
     }
 
-    const setContextMenu = () => {
-        for (let item of document.querySelectorAll('td')) {
-            
-            item.oncontextmenu = (event) => {
-                event.preventDefault();
-                selectBlock(event);
-                let rect = event.currentTarget.getBoundingClientRect();
-                contextMenu.style.left = rect.x +'px';
-                contextMenu.style.top = rect.y + rect.height +'px';
-                contextMenu.style.display = "grid";
-                return;
-            };
-        }
-    }
-
-    setContextMenu();
-
-    const selectBlock = (event) => {
-        console.log(event.target);
-        if (event.target.tagName == 'A') {
-            currentBlock = event.target;
-        }
-        if (event.target.tagName == 'TR')
-        {
-            currentBlock = event.target.querySelector('a');
-        }
-        contextMenu.querySelector('input[name="Link"]').value = currentBlock.href;
-        contextMenu.querySelector('input[name="Text"]').value = currentBlock.innerText;
-    };
-
-    const handleChangeText = (event) => {
-        if (currentBlock) {
-            if (event.target.value) {
-                currentBlock.innerText = event.target.value;
-            }
-        }
-    };
-
-    const handleChangeLink = (event) => {
-        if (currentBlock) {
-            if (event.target.value) {
-                currentBlock.href = /^https?\:\/\//.test(event.target.value) ? event.target.value : 'http://'+event.target.value;
-            }
-            else {
-                currentBlock.removeAttribute('href');
-            }
-        }
-    };
-
-    const addRow = () => {
-        let tbody = document.querySelector('.table-cursos > tbody');
-        let newRow = document.createElement('tr');
-        let cellColor_1 = switchColors ? '#f6f6f6' : '#eaeaea';
-        let cellColor_2 = switchColors ? '#eaeaea' : '#f6f6f6';
-        newRow.innerHTML = `
-            <td style="width:50%;font-family:Roboto;padding:10px;background-color:${cellColor_1};">
-                <a style="text-decoration:none;color:inherit;">
-                    Nome do curso da esquerda
-                </a>
-            </td>
-            <td style="width:50%;font-family:Roboto;padding:10px;background-color:${cellColor_2};">
-                <a style="text-decoration:none;color:inherit;">
-                    Nome do curso da direita
-                </a>
-            </td>
-        `;
-        tbody.appendChild(newRow);
-        switchColors = !switchColors; // Invert colors
-        setContextMenu();
-        rowCounter++;
-    };
-
-    const removeRow = () => {
-        if (rowCounter == 0) { return; }
-        let tbody = document.querySelector('.table-cursos > tbody');
-        tbody.removeChild(tbody.lastChild);
-        rowCounter--;
-        switchColors = !switchColors;
-    };
-
-    const getHTMLCode = () => {
-        let tableHTML = document.querySelector('.table-div').innerHTML;
-        let codeContainer = document.querySelector('.code-container>pre>code');
-        codeContainer.innerText = tableHTML;
-        setTimeout(
-            () => {
-                navigator.clipboard.writeText(tableHTML);
-                alert('Código copiado!');
-            },
-            50
-        );
-    }
 </script>
