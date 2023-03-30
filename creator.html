@@ -292,5 +292,12 @@
         let tableHTML = document.querySelector('.table-div').innerHTML;
         let codeContainer = document.querySelector('.code-container>pre>code');
         codeContainer.innerText = tableHTML;
+        setTimeout(
+            () => {
+                navigator.clipboard.writeText(tableHTML);
+                alert('Código copiado!');
+            },
+            50
+        );
     }
 </script>
